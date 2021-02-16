@@ -26,9 +26,9 @@ public class PostGetResponse {
 
     private LocalDateTime lastUpdate;
 
-    private int viewCount;
+    private long viewCount;
 
-    private int likeCount;
+    private long likeCount;
 
     User user;
 

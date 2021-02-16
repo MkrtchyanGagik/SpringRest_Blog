@@ -1,6 +1,5 @@
 package com.example.restsecurity.controller;
 
-import com.example.restsecurity.model.Post;
 import com.example.restsecurity.service.post.PostService;
 import com.example.restsecurity.transform.requset.post.PostCreateRequest;
 import com.example.restsecurity.transform.requset.post.PostUpdateRequest;
@@ -47,8 +46,13 @@ public class PostController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/get/{userId}")
-    public List<Post> getPostByUserId(@PathVariable int userId) {
-        return postService.getByUserId(userId);
+    @GetMapping("/user/{userId}")
+    public List<PostGetResponse> getPostByUserId(@PathVariable Integer userId) {
+        return postService.getAllByUserId(userId);
+    }
+
+    @GetMapping("/all")
+    public List<PostGetResponse> getAllPosts() {
+        return postService.getAll();
     }
 }

@@ -26,9 +26,9 @@ public class Post {
     @Column(name = "last_update")
     private LocalDateTime lastUpdate;
     @Column(name = "view_count")
-    private int viewCount;
+    private long viewCount;
     @Column(name = "like_count")
-    private int likeCount;
+    private long likeCount;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @JsonBackReference

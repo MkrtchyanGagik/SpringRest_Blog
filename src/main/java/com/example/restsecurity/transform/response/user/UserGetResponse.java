@@ -23,7 +23,6 @@ public class UserGetResponse {
     private UserType userType;
 
 
-    private List<Post> posts;
 
 
 }

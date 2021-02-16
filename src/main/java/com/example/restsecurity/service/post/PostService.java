@@ -6,9 +6,11 @@ import com.example.restsecurity.common.exception.UserNotFoundException;
 import com.example.restsecurity.model.Category;
 import com.example.restsecurity.model.Post;
 import com.example.restsecurity.model.User;
+import com.example.restsecurity.model.Views;
 import com.example.restsecurity.repository.CategoryRepository;
 import com.example.restsecurity.repository.PostRepository;
 import com.example.restsecurity.repository.UserRepository;
+import com.example.restsecurity.repository.ViewsRepository;
 import com.example.restsecurity.service.AddSupported;
 import com.example.restsecurity.service.DeleteSupported;
 import com.example.restsecurity.service.GetSupported;
@@ -21,6 +23,8 @@ import com.example.restsecurity.transform.response.post.PostUpdateResponse;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,12 +35,13 @@ public class PostService implements AddSupported<PostCreateRequest, PostCreateRe
     private UserRepository userRepository;
     private PostRepository postRepository;
     private CategoryRepository categoryRepository;
+    private ViewsRepository viewsRepository;
 
-    public PostService(UserRepository userRepository, CategoryRepository categoryRepository, PostRepository postRepository) {
+    public PostService(UserRepository userRepository, CategoryRepository categoryRepository, PostRepository postRepository, ViewsRepository viewsRepository) {
         this.categoryRepository = categoryRepository;
         this.postRepository = postRepository;
         this.userRepository = userRepository;
-
+        this.viewsRepository = viewsRepository;
 
     }
 
@@ -73,14 +78,48 @@ public class PostService implements AddSupported<PostCreateRequest, PostCreateRe
         if (!exist) {
             throw new PostNotFoundException(id);
         }
+        try {
+            Views view = new Views();
+            view.setPostId(id);
+            view.setUserId(1);
+            viewsRepository.save(view);
+        } catch (Exception e) {
+
+        }
+
+
+
         Post post = postRepository.findById(id).get();
+        post.setViewCount(viewsRepository.countByPostId(id));
         PostGetResponse postGetResponse = new PostGetResponse();
         BeanUtils.copyProperties(post, postGetResponse);
         return postGetResponse;
     }
 
-    public List<Post> getByUserId(Integer userId){
-        return postRepository.findByUserId(userId);
+    @Override
+    public List<PostGetResponse> getAll() {
+        List<Post> posts = postRepository.findAll();
+        List<PostGetResponse> postGetResponses = new ArrayList<>();
+
+        for (Post post : posts) {
+            PostGetResponse postGetResponse = new PostGetResponse();
+            BeanUtils.copyProperties(post, postGetResponse);
+            postGetResponses.add(postGetResponse);
+        }
+
+        return postGetResponses;
+    }
+
+    public List<PostGetResponse> getAllByUserId(Integer id) {
+        List<Post> userPosts = postRepository.findAllByUserId(id);
+        List<PostGetResponse> userPostGetResponses = new ArrayList<>();
+
+        for (Post post : userPosts) {
+            PostGetResponse postGetResponse = new PostGetResponse();
+            BeanUtils.copyProperties(post, postGetResponse);
+            userPostGetResponses.add(postGetResponse);
+        }
+        return userPostGetResponses;
     }
 
     @Override

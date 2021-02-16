@@ -16,6 +16,9 @@ import com.example.restsecurity.transform.response.user.UserUpdateResponse;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 public class UserService implements AddSupported<UserCreateRequest,UserCreateResponse>, GetSupported<Integer, UserGetResponse>, DeleteSupported<Integer>, UpdateSupported<UserUpdateResponse, UserUpdateRequest,Integer> {
@@ -49,6 +52,19 @@ public class UserService implements AddSupported<UserCreateRequest,UserCreateRes
         UserGetResponse userGetResponse =new UserGetResponse();
         BeanUtils.copyProperties(user, userGetResponse);
         return userGetResponse;
+    }
+
+    @Override
+    public List<UserGetResponse> getAll() {
+        List<User> users=userRepository.findAll();
+        List<UserGetResponse> userGetResponses=new ArrayList<>();
+        for (User user:users) {
+            UserGetResponse userGetResponse=new UserGetResponse();
+            BeanUtils.copyProperties(user,userGetResponse);
+            userGetResponses.add(userGetResponse);
+        }
+        BeanUtils.copyProperties(users,userGetResponses);
+        return userGetResponses;
     }
 
     @Override
