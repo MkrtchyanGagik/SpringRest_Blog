@@ -23,8 +23,6 @@ import com.example.restsecurity.transform.response.post.PostUpdateResponse;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
