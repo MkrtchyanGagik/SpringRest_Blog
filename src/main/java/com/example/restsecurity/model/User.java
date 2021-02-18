@@ -1,12 +1,10 @@
 package com.example.restsecurity.model;
 
 import com.example.restsecurity.common.enums.UserType;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @NoArgsConstructor

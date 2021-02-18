@@ -6,11 +6,9 @@ import com.example.restsecurity.common.exception.UserNotFoundException;
 import com.example.restsecurity.model.Category;
 import com.example.restsecurity.model.Post;
 import com.example.restsecurity.model.User;
-import com.example.restsecurity.model.Views;
 import com.example.restsecurity.repository.CategoryRepository;
 import com.example.restsecurity.repository.PostRepository;
 import com.example.restsecurity.repository.UserRepository;
-import com.example.restsecurity.repository.ViewsRepository;
 import com.example.restsecurity.service.AddSupported;
 import com.example.restsecurity.service.DeleteSupported;
 import com.example.restsecurity.service.GetSupported;
@@ -33,13 +31,12 @@ public class PostService implements AddSupported<PostCreateRequest, PostCreateRe
     private UserRepository userRepository;
     private PostRepository postRepository;
     private CategoryRepository categoryRepository;
-    private ViewsRepository viewsRepository;
 
-    public PostService(UserRepository userRepository, CategoryRepository categoryRepository, PostRepository postRepository, ViewsRepository viewsRepository) {
+
+    public PostService(UserRepository userRepository, CategoryRepository categoryRepository, PostRepository postRepository) {
         this.categoryRepository = categoryRepository;
         this.postRepository = postRepository;
         this.userRepository = userRepository;
-        this.viewsRepository = viewsRepository;
 
     }
 
@@ -76,19 +73,8 @@ public class PostService implements AddSupported<PostCreateRequest, PostCreateRe
         if (!exist) {
             throw new PostNotFoundException(id);
         }
-        try {
-            Views view = new Views();
-            view.setPostId(id);
-            view.setUserId(1);
-            viewsRepository.save(view);
-        } catch (Exception e) {
-
-        }
-
-
 
         Post post = postRepository.findById(id).get();
-        post.setViewCount(viewsRepository.countByPostId(id));
         PostGetResponse postGetResponse = new PostGetResponse();
         BeanUtils.copyProperties(post, postGetResponse);
         return postGetResponse;

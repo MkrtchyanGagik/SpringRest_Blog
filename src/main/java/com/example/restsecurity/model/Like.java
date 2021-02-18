@@ -5,14 +5,13 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "views", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id"})})
+@Table(name = "likes")
 @Data
-public class Views {
-
+public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name="user_id",unique = true)
+    @Column(name = "user_id")
     private int userId;
     @Column(name = "post_id")
     private int postId;

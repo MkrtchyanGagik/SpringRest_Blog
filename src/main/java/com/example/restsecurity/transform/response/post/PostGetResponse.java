@@ -1,19 +1,15 @@
 package com.example.restsecurity.transform.response.post;
 
 import com.example.restsecurity.model.Category;
-import com.example.restsecurity.model.User;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.example.restsecurity.model.Comment;
+import com.example.restsecurity.transform.response.comment.CommentGetResponse;
 import lombok.Data;
 
-import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.List;
+
 @Data
 public class PostGetResponse {
-
-
-
 
 
     private int id;
@@ -30,9 +26,8 @@ public class PostGetResponse {
 
     private long likeCount;
 
-    User user;
+    private Category category;
 
-    Category category;
-
+    private List<Comment> comments;
 
 }
