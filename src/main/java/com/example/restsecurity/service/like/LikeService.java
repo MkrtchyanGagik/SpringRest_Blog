@@ -14,7 +14,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LikeService implements AddSupported<LikeAddRequest, Long> , DeleteSupported<LikeDeleteRequest> {
+public class LikeService implements AddSupported<LikeAddRequest, Long>, DeleteSupported<LikeDeleteRequest> {
     private final LikesRepository likesRepository;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
@@ -37,7 +37,7 @@ public class LikeService implements AddSupported<LikeAddRequest, Long> , DeleteS
         if (!existUser) {
             throw new UserNotFoundException(likeAddRequest.getPostId());
         }
-        if (likesRepository.getByUserIdAndPostId(likeAddRequest.getUserId(),likeAddRequest.getPostId())==null) {
+        if (likesRepository.getByUserIdAndPostId(likeAddRequest.getUserId(), likeAddRequest.getPostId()) == null) {
 
             Like like = new Like();
             BeanUtils.copyProperties(likeAddRequest, like);
@@ -50,9 +50,9 @@ public class LikeService implements AddSupported<LikeAddRequest, Long> , DeleteS
 
     @Override
     public void delete(LikeDeleteRequest likeDeleteRequest) {
-        Like like=likesRepository.getByUserIdAndPostId(likeDeleteRequest.getUserId(),likeDeleteRequest.getPostId());
-            likesRepository.deleteById(like.getId());
-        }
-
+        Like like = likesRepository.getByUserIdAndPostId(likeDeleteRequest.getUserId(), likeDeleteRequest.getPostId());
+        likesRepository.deleteById(like.getId());
     }
+
+}
 

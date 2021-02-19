@@ -6,13 +6,14 @@ import com.example.restsecurity.common.exception.PostNotFoundException;
 import com.example.restsecurity.common.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler({UserNotFoundException.class, PostNotFoundException.class, CategoryNotFoundException.class})
+    @ExceptionHandler({UserNotFoundException.class, PostNotFoundException.class, CategoryNotFoundException.class, CommentNotFoundException.class, MethodArgumentNotValidException.class})
     public final ResponseEntity<ApiError> handleException(Exception ex) {
         if (ex instanceof UserNotFoundException) {
             UserNotFoundException unfe = (UserNotFoundException) ex;
@@ -39,7 +40,11 @@ public class GlobalExceptionHandler {
 
 
         }
+        if (ex instanceof MethodArgumentNotValidException) {
+            MethodArgumentNotValidException manfe = (MethodArgumentNotValidException) ex;
+            return ResponseEntity.ok(new ApiError(manfe.getMessage(), HttpStatus.BAD_REQUEST));
+        }
+
         return ResponseEntity.ok(ApiError.DEFAULT);
     }
-
 }

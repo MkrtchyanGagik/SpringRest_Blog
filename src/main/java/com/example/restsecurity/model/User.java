@@ -25,7 +25,7 @@ public class User {
     @NotNull
     private String surname;
     @Column(name = "email")
-    @Email
+    @Email(message = "invalid email type")
     @NotEmpty(message = "Field email cannon be empty")
     @NotNull(message = "Field email cannot be null")
     private String email;

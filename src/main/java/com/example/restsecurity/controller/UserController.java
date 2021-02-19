@@ -1,7 +1,6 @@
 package com.example.restsecurity.controller;
 
 import com.example.restsecurity.common.api.ApiResponse;
-import com.example.restsecurity.common.exception.UserNotFoundException;
 import com.example.restsecurity.service.user.UserService;
 import com.example.restsecurity.transform.requset.user.UserCreateRequest;
 import com.example.restsecurity.transform.requset.user.UserUpdateRequest;
@@ -26,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ApiResponse<UserCreateResponse> createUser(@Valid @RequestBody UserCreateRequest userCreateRequest ,BindingResult bindingResult) {
+    public ApiResponse<UserCreateResponse> createUser(@Valid @RequestBody UserCreateRequest userCreateRequest ) {
         return new ApiResponse<>("User successfully created", HttpStatus.OK.value(), userService.add(userCreateRequest));
     }
 
