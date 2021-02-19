@@ -1,12 +1,14 @@
 package com.example.restsecurity.common.api;
 
 import com.example.restsecurity.common.exception.CategoryNotFoundException;
+import com.example.restsecurity.common.exception.CommentNotFoundException;
 import com.example.restsecurity.common.exception.PostNotFoundException;
 import com.example.restsecurity.common.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -25,6 +27,13 @@ public class GlobalExceptionHandler {
 
         if (ex instanceof CategoryNotFoundException) {
             CategoryNotFoundException cnfe = (CategoryNotFoundException) ex;
+
+            return ResponseEntity.ok(new ApiError(cnfe.getMessage(), HttpStatus.NOT_FOUND));
+
+
+        }
+        if (ex instanceof CommentNotFoundException) {
+            CommentNotFoundException cnfe = (CommentNotFoundException) ex;
 
             return ResponseEntity.ok(new ApiError(cnfe.getMessage(), HttpStatus.NOT_FOUND));
 

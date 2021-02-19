@@ -32,7 +32,7 @@ public class PostController {
 
     @GetMapping("{id}")
     public ApiResponse<PostGetResponse> getPost(@PathVariable int id) {
-        return new ApiResponse<PostGetResponse>(HttpStatus.OK.value(),postService.get(id));
+        return new ApiResponse<>(HttpStatus.OK.value(),postService.get(id));
     }
 
     @PutMapping("{id}")

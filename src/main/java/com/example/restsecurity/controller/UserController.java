@@ -1,6 +1,7 @@
 package com.example.restsecurity.controller;
 
 import com.example.restsecurity.common.api.ApiResponse;
+import com.example.restsecurity.common.exception.UserNotFoundException;
 import com.example.restsecurity.service.user.UserService;
 import com.example.restsecurity.transform.requset.user.UserCreateRequest;
 import com.example.restsecurity.transform.requset.user.UserUpdateRequest;
@@ -8,8 +9,10 @@ import com.example.restsecurity.transform.response.user.UserCreateResponse;
 import com.example.restsecurity.transform.response.user.UserGetResponse;
 import com.example.restsecurity.transform.response.user.UserUpdateResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -23,7 +26,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ApiResponse<UserCreateResponse> createUser(@RequestBody UserCreateRequest userCreateRequest) {
+    public ApiResponse<UserCreateResponse> createUser(@Valid @RequestBody UserCreateRequest userCreateRequest ,BindingResult bindingResult) {
         return new ApiResponse<>("User successfully created", HttpStatus.OK.value(), userService.add(userCreateRequest));
     }
 

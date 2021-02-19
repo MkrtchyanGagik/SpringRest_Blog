@@ -4,6 +4,7 @@ import com.example.restsecurity.common.exception.CategoryNotFoundException;
 import com.example.restsecurity.common.exception.PostNotFoundException;
 import com.example.restsecurity.common.exception.UserNotFoundException;
 import com.example.restsecurity.model.Category;
+import com.example.restsecurity.model.Comment;
 import com.example.restsecurity.model.Post;
 import com.example.restsecurity.model.User;
 import com.example.restsecurity.repository.CategoryRepository;
@@ -15,6 +16,7 @@ import com.example.restsecurity.service.GetSupported;
 import com.example.restsecurity.service.UpdateSupported;
 import com.example.restsecurity.transform.requset.post.PostCreateRequest;
 import com.example.restsecurity.transform.requset.post.PostUpdateRequest;
+import com.example.restsecurity.transform.response.comment.CommentGetResponse;
 import com.example.restsecurity.transform.response.post.PostCreateResponse;
 import com.example.restsecurity.transform.response.post.PostGetResponse;
 import com.example.restsecurity.transform.response.post.PostUpdateResponse;
@@ -75,7 +77,15 @@ public class PostService implements AddSupported<PostCreateRequest, PostCreateRe
         }
 
         Post post = postRepository.findById(id).get();
+        List<Comment> comments = post.getComments();
+        List<CommentGetResponse> commentGetResponses = new ArrayList<>();
+        for (Comment comment : comments) {
+            CommentGetResponse commentGetResponse = new CommentGetResponse();
+            BeanUtils.copyProperties(comment, commentGetResponse);
+            commentGetResponses.add(commentGetResponse);
+        }
         PostGetResponse postGetResponse = new PostGetResponse();
+        postGetResponse.setComments(commentGetResponses);
         BeanUtils.copyProperties(post, postGetResponse);
         return postGetResponse;
     }

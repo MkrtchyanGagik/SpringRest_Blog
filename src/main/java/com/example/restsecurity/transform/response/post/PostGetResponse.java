@@ -28,6 +28,6 @@ public class PostGetResponse {
 
     private Category category;
 
-    private List<Comment> comments;
+    private List<CommentGetResponse> comments;
 
 }
